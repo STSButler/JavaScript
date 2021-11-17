@@ -1,11 +1,9 @@
 # JavaScript
 <h1>JavaScript Projects</h1>
 <p>
-This repository focuses on HTML, JavaScript and explanation.
+This repository focuses on interactive HTML examples, JavaScript and explanation.
 </p>
-<h2>JSTopics</h2>
+<h2>JSClasses</h2>
 <p>
-The first project, JSTopics, includes HTML, JavaScript and explanation of techniques including template literals, 
-template literals with expressions, promises, closures, arrow functions, rest parameters, strict mode, imports, modules and
-the combination of rest parameters with arrow functions. 
+This project covers JavaScript class implementation, inheritance, getters, setters, how to define dynamic read-only properties and static methods. JavaScript classes are templates for JavaScript objects. Classes are part of ES6. 
 </p>
