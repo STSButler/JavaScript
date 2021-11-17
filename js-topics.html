@@ -1,0 +1,1167 @@
+<!doctype HTML>
+<html lang="en">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>JavaScript Topics</title>  	
+<meta name="description" content="Learn some JavaScript techniques including template literals, template literals with expressions, promises, closures, arrow functions, rest parameters, strict mode, imports and modules."/>  	
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body{margin-top:0px;padding-top:0px;font-family:verdana, arial, sans-serif;}
+body,html{height:100%;}
+main{width:90%;margin:0px 5% 0px 5%;}
+
+p {text-align:left;}
+h1,h2,h3,h4{text-align:left;clear:both; display:block;}
+h1{color:#0000aa;} h5{color:#0000aa;}
+h2{color:#008574;} h2 q {color:#008574;}
+h3{color:#0000aa;} h4{ color:#007777; }
+
+q,pre,code{text-align:left; color:blue;}
+
+dt{font-weight:bold;}
+ul {list-style-type:disc;} 
+li{padding-bottom:1%;}
+
+.btn,.btn:link,.btn:visited{
+width:46%; padding:1%; margin:0px 1% 0px 1%;
+color:black; background-color:white; -webkit-appearance:none;text-align:center; border:solid 2px #888888;
+border-radius: 6px;
+}
+
+.btn:hover,.btn:active{background-color:#bbbbbb;}
+.btn span.toc{text-align:center; width:80%; margin-top:4%;}
+.txt{clear:both; float:none; display:block; width:100%; text-align:center; color:#3FA9F5; font-size:400%; font-weight:bold; font-family:Impact, Charcoal, sans-serif;}
+
+div.lnk{float:left;width:25%;margin:4% 4% 4% 0%;}
+a.bm{color:#1111aa;width:100%;display:inline-block;padding-bottom:3%;}
+a.bm:link{color:#1111aa;} a.bm:hover{color:#008888;}
+a.bm:visited{color:#1111aa;} a.bm:active{color:#008888;}
+div.box{
+color:white; 
+width:46%; 
+text-align:left;
+float:left; 
+display:inline;  
+padding:1%; 
+margin:0px 1% 0px 1%;
+font-weight:bold;
+}
+
+.pt{padding-top:2%;}
+@media (orientation: portrait) {
+div.lnk{float:none; display:block; width:100%;margin:0px;}
+div.box{
+width:96%;
+margin:4% 1% 0px 1%;
+padding:4% 1% 4% 1%;
+display:block; 
+float:none;
+}
+}
+</style>   
+<script async src="javascript/advanced.js"></script>
+</head>
+<body>	
+<main>
+<h1>JavaScript Topics</h1>
+<div class="lnk">			
+<a class="bm" href="#intro" title="Introduction">Introduction</a>
+<a class="bm" href="#tl" title="Template Literals">Template Literals</a>
+<a class="bm" href="#promises" title="Promises">Promises</a>
+<a class="bm" href="#closure" title="Closures">Closures</a>
+<a class="bm" href="#arrow" title="Arrow Functions">Arrow Functions</a>
+<a class="bm" href="#rest" title="Rest Parameters">Rest Parameters</a>
+<a class="bm" href="#cra" title="Combine Arrow, Rest Parameter, Array Reduce">Combine Arrow, Rest, Array Reduce</a>
+<a class="bm" href="#idStrict" title="Strict Mode">Strict Mode</a>
+<a class="bm" href="#modules" title="Simple Module">Simple Module</a>
+<a class="bm" href="#imports" title="Simple Import">Simple Import</a>
+<a class="bm" href="#miel" title="Module, Import, Event Listener">Module, Import, Event Listener</a>
+<a class="bm" href="#sum" title="Summary">Summary</a>
+</div>
+<h2 id="intro">Introduction</h2>
+<p>
+Learn some advanced JavaScript techniques
+including template literals, template literals with expressions,
+promises, closures, arrow functions, rest parameters, strict mode, imports
+and modules. We'll also combine rest parameters with arrow functions. 
+</p>
+
+<h2 id="tl">Template Literals</h2>
+<h3>Template Literal Substitution</h3>
+<p>
+A template literal with substitution
+allows developers to substitute <em>variable values</em> within brackets.
+A template bracket begins with <code>${</code>
+and ends with <code>}</code>.
+</p>
+<p>
+Insert strings <code>sBreed</code>
+and <code>sType</code>
+into the string <code>text</code>,
+within brackets <code>${..}</code>.
+The return value equals <q>Animal: Savannah, Cat.</q>.
+<a href="#tempcode" title="Click a Box">Click</a>
+the box to see the result, below.
+The following function, <code>fTemplate()</code>
+includes the code to return a string
+from a template literal.
+</p>
+<pre>
+function fTemplate(){
+let sBreed = "Savannah";
+let sType = "Cat";
+let text = `Animal: ${sBreed}, ${sType}.`;
+return text;
+}
+</pre>
+
+<h3>Template Literal Expression</h3>
+<p>
+A template literal with an expression
+allows an <em>expression</em> within a template.
+The template begins with <code>${</code>
+and ends with <code>}</code>.
+</p>
+<p>
+The expression <code>(start * growth).toFixed(2)</code>
+evaluates between the brackets <code>${...}</code>.
+The result should display <q>Final: 27.50</q>.
+<a href="#tempcode" title="Click a Box">Click</a>
+a box to see the result, below.
+The following function includes the code
+to return a string from a template literal
+with an expression.
+</p>
+<pre>
+function fTempExp(){
+let start = 22;
+let growth = 1.25;
+
+let final = `Final: ${(start * growth).toFixed(2)}`;
+return final;
+}
+</pre>
+
+<h4 id="tempcode">Click a Box</h4>
+<div class="box" onclick="this.innerHTML = fTemplate()" style="background-color:#3300ff;">
+<div style="color:#00ffff;">Template Literal Substitution</div>
+function fTemplate(){<br>
+let sBreed = "Savannah";<br>
+let sType = "Cat";<br>
+let text = `Animal: ${sBreed}, ${sType}.`;<br>
+return text;<br>
+}
+</div>
+
+<div class="box" onclick="this.innerHTML = fTempExp()" style="background-color:#006666;">
+
+<div style="color:#00ffff;">Template Literal Expression</div>
+function fTempExp(){<br>
+	let start = 22;<br>
+	let growth = 1.25;<br>
+
+	let final = `Final: ${(start * growth).toFixed(2)}`;<br>
+	return final;<br>
+	}
+</div>
+
+<h2 id="closure" class="pt">Closures</h2>
+<p>
+Declare a closure as a child function within
+a parent function.
+The child function retains access to properties
+in the parent scope.
+</p>
+<h3>Simple Factorial</h3>
+<p>
+Call factorial() the number of times
+you want to calculate a factorial, starting at one.
+The factorial from one to four 
+should equal <code>1 * 2 * 3 * 4 = 24</code>.
+The following code displays
+a simple method to process the factorial of four.
+The last statement, <code>this.innerHTML = factorial();</code>
+is the fourth call to <code>factorial()</code>
+and displays the result in an HTML element.
+</p>
+<code>factorial(); factorial(); factorial(); this.innerHTML = factorial();</code>
+
+<h5>Simple Factorial Closure</h5>
+<p>
+<a href="#fact" title="Tap a Box">Tap a box</a>
+below to see closure examples in action.
+The simple factorial closure source code
+displays below.
+</p>
+<pre>
+/**
+ * Factorial equals the
+ * product of a series of numbers.
+ * 1 * 2 * 3 * 4...
+ */
+const factorial = (function () 
+{
+ let f = 1;
+ let r = 1;
+ 
+ // The closure:
+ return function () 
+ { 
+  console.log("f: "+f+ ", r:"+r);
+  console.log("f * r: " +f * r);
+  r = f * r;
+  f += 1; 
+  return r;
+ }
+}
+)();
+</pre>
+
+<h5>Factorial with End Value Parameter</h5>
+<p>
+A slightly simpler closure includes
+a parameter which indicates the factorial end point.
+For example if you want to see the
+factorial of seven, call <code>factorialN(7);</code>.
+</p>
+<p>
+Pass a parameter to the factorial
+function. The parameter indicates
+the last number in a series of products.
+For example if you call <code>factorialN(4)</code>,
+the result should equal <code>1 * 2 * 3 * 4 = 24</code>.
+</p>
+<p>
+<a href="#fact" title="Tap a Box">Tap a box</a>
+below to see both closure examples in action.
+The code below demonstrates
+one technique to use a closure
+to process factorials.
+However closures have many more uses.
+</p>
+<pre>
+/**
+ * Factorial equals the
+ * product of a series of numbers.
+ * 1 * 2 * 3 * 4
+ * @param n: Number representing 
+ * end of factorial calculation.
+ */
+const factorialN = (function (n) 
+{
+ let f = 1;
+ let r = 1;
+ return function (n) 
+ { 
+  for (var i = 0; i &lt; n; i++){
+   console.log("f: "+f+ ", r:"+r);
+   console.log("f * r: " +f * r);
+   r = f * r;
+   f += 1; 
+  }
+  return r;
+ }
+}
+</pre>
+
+<h5>Tap the Box</h5>
+<div id="fact" class="box" onclick="factorial(); factorial(); factorial(); this.innerHTML = factorial();" style="background-color:blue;">
+<div style="color:#00ffff;">Call factorial from one to four. Should equal 24.</div>
+</div>
+<div id="nResult" class="box" style="background-color:green;">
+<div style="color:#00ffff;">Enter Factorial Digit Below:</div>
+<div id="nF" style="color:white; border:solid 1px white;" contenteditable>0</div>
+<button style="margin:4px auto 0px auto; text-align:center; display:block; width:80%;" onclick="processFactorial('nF','nResult')">Process Factorial</button>
+</div>
+
+<h2 id="promises" class="pt">Promises</h2>
+<p>
+Promises link long running code with
+result handler functions, which
+wait for a response.
+</p>
+<dl>
+<dt>Producer</dt>
+<dd>Code that takes time.</dd>
+
+<dt>Consumer</dt>
+<dd>Code that waits for result.</dd>
+
+<dt>Promise</dt>
+<dd>Link between Consumer and Producer</dd>
+</dl>
+
+<h2>Order</h2>
+<p>
+First define your promise handler or handlers.
+Second create a Promise object.
+Third call the promise.
+</p>
+<ol>
+<li>Define Promise Handler; <code>displayInfo()</code>.</li>
+<li>Create Promise object; <code>var promiseButton = new Promise(...)</code></li>
+<li>Call Promise; <code>promiseButton.then(...)</code></li>
+</ol>
+
+<h3>Promise Handler</h3>
+<p>
+Define a promise handler that
+simply displays the result.
+This handler can be used if the
+Promise results in an error, or
+acceptable responses.
+</p>
+<pre>
+function displayInfo(sInfo){
+let eDebug = document.getElementById('eDebug');
+eDebug.innerHTML = sInfo;
+}
+</pre>
+
+<h3>Create a Promise</h3>
+<p>
+The following code creates
+a Promise with status handlers for
+either an error or acceptable responses.
+</p>
+<p>
+This promise handler
+calls an <code>XMLHttpRequest()</code>
+to download an XML file.
+</p>
+<pre>
+var promiseButton = new Promise(
+
+function(resolveOK, resolveError) {
+
+let req = new XMLHttpRequest();
+
+req.open('GET', 
+"assets/ss-promise-got.html"
+);
+
+req.onload = function() {
+
+if (req.status == 200) {
+
+// Download went well.
+resolveOK(req.response);
+
+}
+
+else {
+
+// Download error:
+rejectError("File not Found");
+
+}
+
+};
+
+
+// Execute the download:
+req.send();
+
+});
+</pre>
+
+<h2>Call a Promise</h2>
+<p>
+Call the promise, with the 
+<code>resolveOK()</code> and <code>resolveError()</code> functions 
+<em>in order</em>.
+The following function, <code>promiseCall()</code>
+responds when the user taps a button.
+</p>
+<pre>
+function promiseCall(){
+promiseButton.then(
+function(value) {displayInfo(value);},
+function(error) {displayInfo(error);}
+)
+}
+</pre>
+
+<p>
+The following HTML markup
+executes <code>promiseCall()</code>
+when the user taps the div element.
+</p>
+<pre>
+&lt;div 
+id="eDebug"
+onclick="promiseCall()"
+&gt;
+&lt;/div&gt;
+</pre>
+
+<h3 id="promisecall">Tap for Promise</h3>
+<p>
+The button below calls a function
+which activates <code>promiseButton.then(...)</code>.
+I created the <code>promiseButton</code>, outside of
+the calling function, with a var instead of let.
+That allowed me to define the promise
+earlier, and allows the function to access the promise.
+</p>
+
+<h4>Tap the Button!</h4>
+<div id="eDebug" onclick="promiseCall()">
+<button class="btn" style="float:none; display:block; margin:0px auto 0px auto;" title="Promise Button">
+ <span   class="txt">Waiting</span>
+ <span class="sml">Waiting for Promise</span>
+</button>
+</div>
+
+<h2 id="arrow">Arrow Functions</h2>
+<p>
+Arrow functions have a unique
+signature, and different parent element,
+than normal JavaScript functions.
+Signature pseudo code, for an arrow function, follows.
+</p>
+<code>functionName = (parameters) => function body;</code>
+
+<p>
+You can remove brackets and the return keyword
+for functions with only one statement
+and a return value.
+</p>
+<p>
+The following two function definitions
+demonstrate how to accomplish the
+same task with either a normal
+function or an arrow function.
+</p>
+<pre>
+// Before
+fHi = function() {
+return "Hi Web Developer!";
+}
+
+// Arrow
+fHi = () => "Hi Web Developer!";
+</pre>
+
+<p>
+The following two examples
+demonstrate arrow functions with parameters.
+</p>
+<pre>
+// Before
+function fMultiply(a,b){ 
+return a * b;
+}
+
+// Arrow
+let fMultiply = (a, b) => a * b;
+</pre>
+
+<p>
+Normally the <code>this</code> property
+is the object that calls a function, such
+as a button.
+With arrow functions <code>this</code>
+property is the function's owner, in this case the
+owner is the window.
+</p>
+<pre>
+// Normal
+fNormal = function() {
+btnNormalTxt = document.getElementById("btnNormalTxt");
+btnNormalTxt.innerHTML = this;
+}
+
+document.getElementById("btnNormal").addEventListener(
+"click", 
+fNormal
+); 
+
+// Arrow
+fArrow = () => {
+btnArrowTxt = document.getElementById("btnArrowTxt");
+btnArrowTxt.innerHTML = this;
+}
+
+document.getElementById("btnArrow").addEventListener(
+"click", 
+fArrow
+); 
+</pre>
+
+<h3>Tap Both Buttons</h3>
+<p>
+The small text, toward the bottom of each button,
+tells you which type of object <code>this</code>
+represents.
+</p>
+<div class="blk">
+<button id="btnNormal" class="btn"  title="Normal Event Listener">
+<span   class="txt">Normal</span>
+<span   id="btnNormalTxt" class="sml">Function Result</span>
+</button>
+<button id="btnArrow" class="btn"  title="Arrow Event Listener">
+<span   class="txt">Arrow</span>
+<span   id="btnArrowTxt" class="sml">Function Result</span>
+</button>
+</div>
+
+<h2 id="rest">Rest Parameters</h2>
+<p>
+Rest parameters allow JavaScript variadic functions.
+When the function's defined, include
+a rest parameter, preceded by three dots,
+such as <code>f(...restParam);</code>.
+You may treat the rest parameter
+as an array.
+</p>
+<p>
+A <em>variadic</em> function
+includes a variable number of parameters.
+Developers can modify the number
+of parameters when the function's called.
+</p>
+<p>
+Rest parameters are also called spread operators.
+</p>
+
+<h3>Rest Example</h3>
+<p>
+For example, the following function, <code>fRest()</code>,
+displays the first two parameters, <code>p1</code>
+and <code>p2</code>, with the last parameter,
+<code>aryMore</code>.
+Tap the red <a href="#idRest" title="Rest Red Box">box</a>
+to see the results.
+Notice the parameter, <code>...aryMore</code>,
+displays as an array.
+See the HTML <a href="#muRestSimple" title="Simple Rest Markup">Simple Rest Markup</a>.
+</p>
+<pre>
+function fRest(p1, p2, ...aryMore) {
+
+let eRest = document.getElementById('idRest');
+
+eRest.innerHTML = "p1: "+p1+"&lt;br&gt;p2:"+p2+"&lt;br&gt;aryMore:"+aryMore+",";
+
+}
+</pre>
+
+<h3 id="muRestSimple">Simple Rest Markup</h3>
+<p>
+Function <code>fRest()</code> displays
+the first two parameters, <q>Greyhound, Poodle</q>
+as unique values.
+The last three parameters,
+<q>Boxer, Chihauhau, Shepherd</q>,
+display as the contents of an array.
+</p>
+<pre>
+&lt;div 
+class="box"
+id="idRest"
+style="background-color:red;"
+onclick="fRest(
+'Greyhound',
+'Poodle',
+'Boxer',
+'Chihuahua',
+'Shepherd'
+)";
+&gt;
+
+Tap to call fRest()
+
+&lt;/div&gt;
+</pre>
+
+<h3>Rest Buttons</h3>
+<div class="box"
+id="idRest"
+style="background-color:red;"
+onclick="fRest(		'Greyhound',	'Poodle',	'Boxer',	'Chihuahua',	'Shepherd'		);"
+		title="Rest Red Box"
+>
+Tap to call fRest()
+</div>
+
+<div class="box"
+id="idReduce"
+style="background-color:green;"
+onclick="fReduce();"
+				title="Rest Green Box"
+>
+Tap to call fReduce()
+</div>
+
+<h2 class="pt" id="cra">Combine Arrow, Rest Parameter, Array Reduce</h2>
+<p>
+This section applies the Array <code>reduce()</code>
+method, with an arrow function
+on a rest parameter.
+</p>
+
+<h4>Function: Arrow with Reduce Array</h4>
+<p>
+The <code>reduce()</code> array method iterates
+over an array.
+Method <code>reduce()</code>
+applies the result of each previous call to
+the current call of a developer defined function.
+The end result is one value.
+</p>
+<p>
+The first parameter to <code>reduce()</code>
+is a developer defined function.
+The second, optional, parameter 
+is the starting value for the developer defined function.
+</p>
+<p>
+The following code defines a function for <code>reduce()</code>
+that multiplies the sequence of values in an array.
+Tap the
+<a href="#idReduce" title="Green Box">green box</a>
+to see the results of the <code>fReduce()</code>
+function, below.
+</p>
+<pre>
+// Arrow function
+// Multiplies a series
+// of numbers in an array.
+const fReduceMultiply = (prev, curr) => prev * curr;
+
+function fReduce(){
+// Obtain the button.
+let eReduce = document.getElementById('idReduce');
+
+// Declare an array.
+let aryOneToFour = [1, 2, 3, 4];
+
+// 1 * 2 * 3 * 4 = 24.
+eReduce.innerHTML = aryOneToFour.reduce(fReduceMultiply));
+eReduce.innerHTML += "&lt;br &gt;";
+
+// 5 * 1 * 2 * 3 * 4 = 120.
+// Call fReduce with an initial value of five.
+eReduce.innerHTML += aryOneToFour.reduce(fReduceMultiply, 5));
+
+}
+</pre>
+
+<h4>Order With Rest Array</h4>
+<p>
+Only one rest parameter is allowed per function
+and that rest parameter must be the <em>last</em>
+or <em>only</em> parameter.
+As you saw earlier, functions accept individual parameters
+passed <em>before</em> the rest array.
+</p>
+
+<h4>Order with Reduce Method</h4>
+<p>
+With array's <code>reduce()</code> method,
+the first parameter is an array, however
+the last parameter can provide the initial
+value to apply for reduce.
+</p>
+
+<h4>Rest Versus Reduce</h4>
+<p>
+Functions with Rest parameters require
+the Rest (array) parameter <em>last</em>
+and optional other parameters <em>first</em>.
+The array <code>reduce()</code> method
+requires the array parameter <em>first</em>
+and optional initial value <em>last</em>.
+</p>
+<p>
+After some testing it appears that
+developers might not be able to pass
+non Rest parameters to the <code>reduce()</code>
+method. However perhaps that
+depends on the current browser's JavaScript version..
+</p>
+
+<h3>Product Arrow Function: Rest Parameter</h3>
+<p>
+Now create a function with a rest parameter
+then apply the reduce function <em>defined previously</em>,
+named <code>fReduceMultiply()</code>.
+</p>
+<p>
+The following simple function
+iterates over every value in
+rest parameter (array), <code>...aryArgs</code>,
+multiplying each value by the preceding value.
+The product is returned.
+</p>
+<pre>
+/**
+* Multiply every value in ...aryArgs.
+* @param Rest or spread parameter: ...aryArgs
+* @returns: product of array values.
+*/
+function fMult(...aryArgs) {
+return aryArgs.reduce(fReduceMultiply);
+}
+</pre>
+
+<h4>Markup: Rest, Multiply, Arrow</h4>
+<pre>
+&lt;div 
+class="box"
+style="background-color:yellow; color:black;"
+onclick="this.innerHTML = fMult(1,2,3,4)"
+&gt;
+Tap to Multiply:&lt;br&gt;
+(1,2,3,4)
+&lt;/div&gt;
+</pre>
+
+<h3>Sum Arrow Function: Rest Parameter</h3>
+<p>
+Implement a function with a rest parameter.
+Define and call an arrow function
+to sum every value in the
+rest parameter's array.
+Return the sum.
+</p>
+<pre>
+/**
+* Sum every value in ...aryArgs.
+* @param Rest or spread parameter: ...aryArgs
+* @returns: sum of array values.
+*/
+function fSum(...aryArgs) {
+ return aryArgs.reduce((previous, current) => {
+   return previous + current;
+ });
+}
+</pre>
+
+<h4>Markup: Rest, Sum, Arrow</h4>
+<p>
+The following markup declares
+a box. Click on the box
+to see the sum of the rest parameter,
+<code>1,3,4,5</code>.
+<a href="#btnRestArrow" title="Try It: Rest, Arrow: Sum &amp; Product">Try It: Rest, Arrow: Sum &amp; Product</a>.
+</p>
+
+<pre>
+&lt;div 
+class="box"
+style="background-color:violet"
+onclick="this.innerHTML = fSum(1,2,3,4)"
+&gt;
+Tap to Sum:&lt;br&gt;
+(1,2,3,4)
+&lt;/div&gt;
+</pre>
+
+<h3 id="btnRestArrow">Try It: Rest, Arrow: Sum &amp; Product</h3>
+<div  class="blk">
+<div class="box"
+style="background-color:yellow; color:black;"
+onclick="this.innerHTML = fMult(1,2,3,4)"
+>
+Tap to Multiply:<br>
+(1,2,3,4)
+</div>
+
+<div class="box"
+style="background-color:violet"
+onclick="this.innerHTML = fSum(1,2,3,4)"
+>
+Tap to Sum:<br>
+(1,2,3,4)
+</div>
+</div>
+
+
+<h2 id="idStrict" class="pt" >Strict Mode</h2>
+<p>
+Strict mode was enabled in ECMAScript 5.
+Most browsers now support strict mode, yet
+older browsers ignore the simple string declaration.
+Strict mode throws an exception when the developer
+violates good practices, such as
+attempting to write
+to an undeclared variable,
+undeclared object, undeclared property or
+getter only property.
+Strict mode throws exceptions with many
+other violations of good practice, or use
+of reserved keywords, in preparation for
+future JavaScript versions.
+See the following lists for examples.
+</p>
+
+<h3>Strict Mode Errors</h3>
+<p>
+The following list includes examples
+which will throw an exception in
+strict mode.
+</p>
+<dl>
+<dt>Assign to Non Declared Variable</dt>
+<dd>notStrict = "Throws an Error.";</dd>
+
+<dt>Assign to Non Declared Object</dt>
+<dd>myObject = {x:256,y:512}</dd>
+
+<dt>Deleting a Variable</dt>
+<dd>var firstName = "Doris"; delete firstName;</dd>
+
+<dt>Deleting a function</dt>
+<dd>function f(){ var x = 20;} delete f;</dd>
+
+<dt>Duplicate Parameters</dt>
+<dd>function f(x,x){var y = 0;}</dd>
+
+<dt>Octal Literals</dt>
+<dd>Don't use <code>var y = 0256;</code> Use character <q>o</q> after zero. Use <code>var y = 0o256;</code>.</dd>
+
+<dt>Octal Escape Characters</dt>
+<dd>Use hexadecimal escape sequences, <q>\x45</q>, not octal escape sequences, <q>\105</q>.</dd>
+
+<dt>Write to Read Only Property</dt>
+<dd>var obj = {};<br>Object.defineProperty(obj, 'name', { value: 'Doris', writable: false });<br>obj.name = 'Tony';</dd>
+
+<dt>Write to Get Only Property</dt>
+<dd>var obj ={get v(){return "v";}; obj.v = "a";</dd>
+
+</dl>
+
+<h3>Reserved Keywords or Expressions</h3>
+<p>
+This list provides a clue as to which
+features W3C plans to implement in the future.
+For example perhaps access modifiers
+private, protected and public
+are on their way.
+</p>
+<p>
+Don't use the following words
+as variables, functions or expressions, in
+strict mode.
+</p>
+<ul>
+<li>eval</li>
+<li>arguments</li>
+<li>with</li>
+<li>eval("let s = 'Amy'");</li>
+<li>implements</li>
+<li>interface</li>
+<li>let</li>
+<li>package</li>
+<li>private</li>
+<li>protected</li>
+<li>public</li>
+<li>static</li>
+<li>yield</li>
+</ul>
+
+<h3>this Property</h3>
+<p>
+In strict mode, the keyword <q>this</q> returns either the
+object that calls a function or <code>undefined</code>.
+In normal mode, the keyword <q>this</q> returns
+either the the object that calls a function
+or the window.
+</p>
+
+<h3>Apply Strict Mode</h3>
+<p>
+If you want JavaScript to run in strict mode
+then place the line, <q>use strict</q>;, at the top of a file.
+Strict mode then applies to the entire file. It's global.
+If you want a function only to run in strict mode,
+then place, <q>use strict</q>;, as the first line in a function.
+</p>
+<pre>
+function fStrictMode(){
+"use strict";
+// Throws an exception:
+i = 0; 
+}
+</pre>
+
+<h2 id="modules">Simple Module</h2>
+<p>
+Modules are simply files which enable
+sharing of functions, methods and properties.
+Use the keywords <code>export</code>
+and <code>import</code>
+to access features from one file to another file.
+</p>
+<p>
+Create a file for modules, let's call it <q>module-test.js</q>.
+Apply the <code>export</code>
+keyword to specified 
+functions, methods and properties.
+Those functions, methods and properties, will
+then be available outside of <q>module-test.js</q>.
+</p>
+<p>
+For example create the following
+exportable function in <q>module-test.js</q>
+The function displays a
+string in the alert dialog.
+</p>
+<pre>
+/**
+* Display an alert with a message.
+* @param sMessage: String
+*/
+export function popupMessage(sMessage) {
+alert('Popup Message: '+sMessage+'!');
+}
+</pre>
+
+<h2 id="imports">Simple Import</h2>
+<p>
+Imports allow developers to load read-only
+modules of JavaScript, for use in their own files.
+Imports automatically load in strict mode.
+</p>
+<p>
+Imports require CORS. Optionally
+copy pages and files to the same Web server.
+</p>
+
+<h3>Module Scope</h3>
+<p>
+Scripts loaded as a module
+are <em>scoped</em> to the script itself.
+That makes access within or without
+the script a challenge.
+I've seen suggestions to add the module
+to the window object. That doesn't seem
+like a good practice, but it might work best
+for your situation.
+</p>
+<p>
+The following script imports
+everything exported from <q>module-test.js</q>
+to <code>m</code>.
+As soon as it load's, you'll see the
+alert with <q>Hello World</q>.
+You can view or download the JavaScript, 
+<a href="javascript/module-test.js" title="module-test.js">module-test.js</a>.
+</p>
+<pre>
+&lt;script type="module"&gt;
+
+import * as m from './javascript/module-test.js';
+
+// Use exported values 
+// from module-test here.
+
+m.popupMessage('Hello World!');
+
+&lt;/script&gt;
+</pre>
+
+<h2 id="miel">Module, Import, Event Listener</h2>
+<p>
+This section demonstrates how to create a class
+module for export.
+Import the module and assign a module method
+as a click event listener, to a button.
+</p>
+<p>
+I noticed many people online seemed to be
+looking for a simple solution to assign a straight forward
+JavaScript import, as an event listener.
+Here's one relatively simple example.
+</p>
+<p>
+The following export module file,
+<a href="javascript/export-class.js" title="export-class.js">export-class.js</a>,
+declares a class with two static functions.
+The first static function prints out to the
+console, for debugging purposes.
+The second static function changes
+the text on our button.
+</p>
+<p>
+The last line declares that this class is
+for exporting, with <code>export { expClass }</code>.
+The entire JavaScript follows.
+</p>
+<pre>
+class expClass {
+	
+/**
+* Log the function name,
+* and parameter value.
+	
+* @param val: String
+*/
+static fLog = function(val) {
+
+// The class and function:
+console.log('expClass.fLog()');
+
+// Name of parameter:
+console.log('val'); 
+
+
+// Value of parameter.
+console.log(val); 
+
+};
+
+
+/**
+* Change text on
+* button when button tapped.
+*/
+static fBtnText = function() {
+
+// Get the button's main text area:
+let btnTxt = document.getElementById('btnTxt');
+
+// Let user know, button clicked:
+btnTxt.innerHTML = "Button Tapped!";
+
+// Move to the button text:
+window.location="#btnTxt";
+};
+
+};
+
+export { expClass }
+</pre>
+
+<h3>Module: Import Our Class</h3>
+<p>
+Import modules with the attribute <code>type</code>
+and value <q>module</q>.
+Obtain our button by Id, <q>btnMod</q>.
+Assign the <code>expClass</code> static method
+<code>fBtnText</code>
+to the button's <q>onclick</q> event listener.
+</p>
+<p>
+View or download the JavaScript file,
+<a href="javascript/export-class.js" title="export-class.js">export-class.js</a>.
+When you're done, tap the
+<a href="#btnMod" title="Module Button">module button</a>,
+and its text changes.
+</p>
+<pre>
+&lt;script 
+type="module"
+&gt;
+
+// Import the class:
+import {expClass} from './javascript/export-class.js';
+
+// Call the logging function.
+// Look in your console log:
+expClass.fLog('Test log');
+
+// Obtain our button.
+btnMod = document.getElementById(
+'btnMod'
+);
+
+
+if(btnMod != null){
+
+// Add the on click listener:
+btnMod.addEventListener(
+'click',
+expClass.fBtnText,
+false
+);
+
+// Log that we have this button:
+console.log(btnMod);
+
+}
+&lt;/script&gt;
+</pre>
+
+<h3>Tap the Button!</h3>
+<button 
+class="btn" 
+id="btnMod"
+title="Test Module"
+style="float:none; display:block; margin:0px auto 0px auto;"
+>
+<span 
+class="txt"
+id="btnTxt"
+>
+Test Module
+</span>
+</button>
+
+<h3>Button Markup</h3>
+<p>
+HTML markup for the button displays below.
+</p>
+<pre>
+&lt;button 
+class="btn" 
+id="btnMod"
+title="Test Module"
+&gt;
+
+&lt;span 
+class="txt"
+id="btnTxt"
+&gt;
+
+Test Module
+
+&lt;/span&gt;
+
+&lt;/button&gt;
+</pre>
+
+<script type="module">
+// Import the class:
+import {expClass} from './javascript/export-class.js';
+
+// Call the logging function.
+// Look in your console log:
+expClass.fLog('Test log');
+
+// Obtain our button.
+btnMod = document.getElementById('btnMod');
+
+
+if(btnMod != null){
+
+// Add the on click listener:
+btnMod.addEventListener('click',expClass.fBtnText,false);
+
+// Log that we have this button:
+console.log(btnMod);
+
+}
+</script>
+
+<h2 id="sum">Summary</h2>
+<p>
+You learned some advanced JavaScript techniques
+including template literals, template literals with expressions,
+promises, closures, arrow functions, rest parameters, strict mode, imports
+and modules. We also covered how to combine rest parameters with arrow functions. 
+</p>
+<p>
+See the JavaScript
+<a href="javascript/advanced.js" title="advanced.js">advanced.js</a>
+source file for this page.
+See the module JavaScript files,
+<a href="javascript/module-test.js" title="module-test.js">module-test.js</a>
+and
+<a href="javascript/export-class.js" title="export-class.js">export-class.js</a>.
+</p>
+</main>
+</body>
+</html>
