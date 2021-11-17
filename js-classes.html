@@ -1,0 +1,835 @@
+<!doctype HTML>
+<html lang="en">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>JavaScript: Classes</title>  	
+<meta name="description" content="This page covers JavaScript class implementation, inheritance, getters, setters, how to define dynamic read-only properties and static methods.Page 16"/>  	
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body{margin-top:0px;padding-top:0px;font-family:verdana, arial, sans-serif;}
+body,html{height:100%;}
+main{width:90%;margin:0px 5% 0px 5%;}
+#eText{width:50%; color:#111122; text-align:left;float:left;}
+#eGraphic{width:45%; height:auto; color:black; text-align:center; float:right ;margin-bottom:4%; touch-action:none;}
+
+p {text-align:left;}
+h1,h2,h3,h4{text-align:left;clear:both; display:block;}
+h1{color:#0000aa;} h5{color:#0000aa;}
+h2{color:#008574;} h2 q {color:#008574;}
+h3{color:#0000aa;} h4{ color:#007777; }
+
+q,pre,code{text-align:left; color:blue;}
+
+dt{font-weight:bold;}
+ul {list-style-type:disc;} 
+li{padding-bottom:1%;}
+
+.btn,.btn:link,.btn:visited{
+width:46%; padding:1%; margin:0px 1% 0px 1%;
+color:black; background-color:white; -webkit-appearance:none;text-align:center; border:solid 2px #888888;
+border-radius: 6px;
+}
+
+.btn:hover,.btn:active{background-color:#bbbbbb;}
+.btn span.toc{text-align:center; width:80%; margin-top:4%;}
+.txt{clear:both; float:none; display:block; width:100%; text-align:center; color:#3FA9F5; font-size:400%; font-weight:bold; font-family:Impact, Charcoal, sans-serif;}
+
+div.lnk{float:left;width:25%;margin:4% 4% 4% 0%;}
+a.bm{color:#1111aa;width:100%;display:inline-block;padding-bottom:3%;}
+a.bm:link{color:#1111aa;} a.bm:hover{color:#008888;}
+a.bm:visited{color:#1111aa;} a.bm:active{color:#008888;}
+div.box{
+color:white; 
+width:46%; 
+text-align:left;
+float:left; 
+display:inline;  
+padding:1%; 
+margin:0px 1% 0px 1%;
+font-weight:bold;
+}
+.pt{padding-top:2%;}
+#bB em{color:white;}
+
+@media (orientation: portrait) {
+#eGraphic,#eText,div.lnk{display:block; clear:both; float:none; width:100%;margin:0px;}
+div.box{
+width:96%;
+margin:4% 1% 0px 1%;
+padding:4% 1% 4% 1%;
+display:block; 
+float:none;
+}
+}
+</style>   
+<script async src="javascript/Cats.js"></script>
+</head>
+<body>	
+<main>
+<h1>JavaScript Classes</h1>
+<div class="lnk">			
+<a class="bm" href="#intro" title="Introduction">Introduction</a>
+<a class="bm" href="#topic" title="Classes">Classes</a>
+<a class="bm" href="#inheritance" title="Inheritance">Inheritance</a>
+<a class="bm" href="#getset" title="Getters and Setters">Getters and Setters</a>
+<a class="bm" href="#pcp" title="Protect Class Properties">Protect Class Properties</a>
+<a class="bm" href="#static" title="Static Methods">Static Methods</a>
+<a class="bm" href="javascript/Cats.js" title="JavaScript Source: Cats.js">JavaScript Source</a>
+<a class="bm" href="#sum" title="Summary">Summary</a>
+</div>
+
+<h2 id="intro">Introduction</h2>
+<p>
+This page covers JavaScript class
+implementation, inheritance, getters, setters,
+how to define dynamic read-only properties
+and static methods.
+JavaScript classes are templates for JavaScript objects.
+Classes are part of ES6.
+</p>
+<p>
+You must declare a class before using the class.
+Hoisting isn't available with JavaScript classes.
+This page loads an external JavaScript file
+in the header, named <q>Cats.js</q>. 
+</p>
+<code>&lt;script async src="javascript/Cats.js"&gt;&lt;/script&gt;</code>
+
+<h2 id="topic">Classes</h2>
+<p>
+The following two, blue and red, boxes demonstrate use of
+a JavaScript class.
+Below the boxes, I posted the 
+<a href="#imp" title="Class Implementation">class implementation</a>
+and 
+<a href="#mu" title="Box HTML Markup">box HTML markup</a>.
+The markup demonstrates creating a new class with constructor parameters.
+</p>
+<p>
+Each class displays some information about specific cats
+and calls the Javascript operator <code>typeof</code>, with <code>this</code>
+as the operand.
+As you can see a JavaScript class is considered type <q>object</q>.
+</p>
+<div 
+id="bBlue" 
+class="box" 
+onclick="var c = new Cat('Siamese','Loud'); c.showInfoType('bBlue');" 
+style="background-color:blue;"
+>
+Click for Cat Info
+</div>
+
+<div 
+id="bRed" 
+class="box" 
+onclick="var c = new Cat('Bombay','Fat'); c.showInfoType('bRed');" 
+style="background-color:red;"
+>
+Click for Cat Info
+</div>
+
+<h3 id="imp" class="pt">Class Implementation</h3>
+<p>
+Every class has a constructor which is called
+when a new class is created.
+The name of the constructor is always <code>constructor()</code>.
+Include constructor parameters that you want applied
+when a new object of the class is created.
+</p>
+<p>
+The <code>Cat constructor</code>
+requires two strings.
+Formal arguments are <code>breed</code>
+and <code>behavior</code>.
+</p>
+<pre>
+class Cat {
+ /**
+ * Cat constructor.
+ * @param breed: string
+ * @param behavior: string.
+ * @return: a new Cat object.
+ */
+ constructor(breed, behavior) {
+  this.breed = breed;
+  this.behavior = behavior;
+  this.element = null;
+ }
+ 
+ /**
+ * Compose a string with 
+ * the cat's breed and behavior.
+ * @return string: cat's breed, behavior.
+ */
+ showInfo() { 
+  let s = this.breed+','+this.behavior; 
+  return s.toString();
+ }
+ 
+ /**
+ * Compose a string with the typeof operator.
+ * @return string: this type.
+ */
+ showType() { 
+  let s = '&lt;br /&gt;Type: ' + typeof this; 
+  return s.toString();
+ } 
+ 
+ /**
+ * Show everything about this
+ * cat in an HTML element.
+ * @param string: ID of an HTML element.
+ */ 
+ showInfoType(sId){
+  this.element = document.getElementById(sId);
+  this.element.innerHTML = this.showInfo();
+  this.element.innerHTML += this.showType();
+ }
+}
+</pre>
+
+<h3 id="mu">Box HTML Markup</h3>
+<p>
+The markup for each clickable
+box displays below.
+Create a new <code>Cat</code>.
+Pass parameters to the constructor
+each time code creates a new <code>Cat</code>.
+</p>
+<p>
+Call method <code>showInfoType()</code>.
+The only parameter is the value of
+the box's <code>id</code>.
+</p>
+<p>
+Create a new class with, <code>new</code>, the name of the class,
+and any constructor parameters.
+For example, below you'll see, <code>c = new Cat('Siamese', Loud')</code>,
+where <q>Siamese</q> is the constructor's first parameter and
+<q>Loud</q> is the constructor's second parameter.
+</p>
+<pre>
+&lt;div 
+id="bBlue" 
+class="box" 
+onclick="var c = new Cat('Siamese','Loud'); c.showInfoType('bBlue');" 
+style="background-color:blue;"
+&gt;
+Click for Cat Info
+&lt;/div&gt;
+
+&lt;div 
+id="bRed" 
+class="box" 
+onclick="var c = new Cat('Bombay','Fat'); c.showInfoType('bRed');" 
+style="background-color:red;"
+&gt;
+Click for Cat Info
+&lt;/div&gt;
+</pre>
+
+<h2 class="pt" id="inheritance">Inheritance</h2>
+<p>
+Inheritance helps us reuse the <code>Cat</code>
+class constructor, methods and properties,
+in a subclass called <code>CatWild</code>.
+Reusing code offers the ability
+to write concise, legible script.
+</p>
+<p>
+Let's implement <code>CatWild</code> as
+a subclass of <code>Cat</code>.
+I declared <code>Cat</code>
+and <code>CatWild</code>
+in the same file.
+See <a href="javascript/Cats.js" title="Cats.js">Cats.js</a>.
+</p>
+<p>
+Tap a <a href="#bV" title="Wild Cat Button">Wild Cat Button</a>
+to see the results.
+Read 
+<a href="#ih" title="Inheritance Code">Inheritance Code</a> with comments below, for implementation details.
+</p>
+<div 
+id="bV" 
+class="box" 
+onclick="var c = new CatWild('Lion','Ferocious', 'Africa'); c.showInfoTypeRegion('bV');" 
+style="background-color:violet;"
+title="Wild Cat Button"
+>
+Click for Wild Cat Info
+</div>
+
+<div 
+id="bG" 
+class="box" 
+onclick="var c = new CatWild('Jaguar','Fast','South America'); c.showInfoTypeRegion('bG'); " 
+style="background-color:green;"
+title="Wild Cat Button"
+>
+Click for Wild Cat Info
+</div>
+
+<h3 id="ih" class="pt">Inheritance Code</h3>
+<p>
+Notice <code>CatWild</code>
+<em>extends</em> the <code>Cat</code>
+class.
+Class <code>CatWild's</code>
+constructor calls <code>Cat's</code>
+constructor with the keyword <code>super(...)</code>.
+</p>
+<p>
+Class <code>CatWild</code> reuses
+class <code>Cat's showInfoType()</code>
+method, within <code>CatWild's</code>
+<code>showInfoTypeRegion()</code> 
+method.
+In other words, <code>CatWild.showInfoTypeRegion()</code>
+calls <code>Cat.showInfoType()</code>
+because they are the same object.
+Therefore <code>showInfoType()</code>
+from <code>Cat</code> is a method of
+the <code>CatWild</code> class too.
+</p>
+<p>
+The <code>CatWild</code> constructor
+extends the <code>Cat</code> base,
+or <code>Cat</code> parent class. Therefore <code>CatWild's</code> constructor
+also includes the breed and behavior.
+Then <code>CatWild's</code>
+constructor calls <code>super(breed, behavior)</code>.
+The call to <code>super(breed, behavior)</code> calls
+the parent class, <code>Cat's</code>
+constructor.
+</p>
+<pre>
+// CatWild inherits from Cat:
+class CatWild extends Cat {
+
+/**
+* Constructor calls Cat
+* constructor, with Cat
+* parameters.
+* The last parameter
+* is assigned to
+* CatWild property; region.
+
+* @param breed: string cat breed.
+* @param behavior: string cat behavior.
+* @param region: string cat territory.
+*/
+constructor(breed, behavior, region) {
+// Call parent, Cat,
+// class constructor.
+super(breed, behavior);
+this.region = region;
+}
+
+/**
+* Display every field.
+* @param sId: String id of 
+* HTML element.
+*/
+showInfoTypeRegion(sId) {
+// The parent 'Cat' class
+// includes public methods
+// and elements. 
+// You can access them in this
+// child class.
+this.showInfoType(sId);
+this.element.innerHTML += '<br />Region: '+this.region; 
+}
+}
+</pre>
+
+<h3>Wild Cat Box Markup</h3>
+<p>
+The HTML markup is essentially the
+same as the <code>Cat</code> box
+markup, except create a new
+<code>CatWild</code> object, with a third
+constructor parameter.
+Also call method <code>showInfoTypeRegion()</code>
+instead of <code>showInfoType()</code>.
+</p>
+<code>var c = new CatWild('Jaguar','Fast','South America'); c.showInfoTypeRegion('bG');</code>
+
+
+
+<h2 id="getset">Getters and Setters</h2>
+<p>
+You can add getters and setters to any class.
+Getters and setters allow developers
+to retrieve and assign property values,
+through a type of method.
+</p>
+
+<h3>Advantages</h3>
+<p>
+Getter and setter methods allow developers
+to modify access to some properties.
+Use of setter methods allow
+developers to perform validation on values
+before assignment.
+</p>
+
+<h3>Read Only</h3>
+<p>
+Exclusion of setter methods on
+a class indicates the developer may
+not want assignment of a value to a property.
+However, at this time, developers
+can look at the code and assign
+a value directly to the property,
+as you'll see below.
+</p>
+
+<h3>CatHybrid Child Class</h3>
+<p>
+Here we'll add getters and setters to the
+<code>CatHybrid</code> class which
+extends the <code>Cat</code> class.
+Hybrids either mix wild cats with
+domesticated cats or different breeds
+of domesticated cats. The breeder often
+tries to cultivate a cat that
+looks wild yet behaves like a domesticated
+variety.
+</p>
+<p>
+The <code>CatHybrid</code> constructor
+will extend just the <code>Cat</code> base,
+or parent class. Therefore its constructor
+also includes the breed and behavior.
+</p>
+<code>class CatHybrid extends Cat{...}</code>
+
+<h3>Extension</h3>
+<p>
+Note that <code>CatHybrid</code>
+<em>could</em> extend <code>CatWild</code>
+instead of <code>Cat</code>.
+Then the <code>CatHybrid</code>
+constructor would call the <code>CatWild's</code>
+constructor with <code>super(...)</code>, and
+every <code>CatWild</code> required parameter.
+<em>Additionally</em> every property and
+method along the chain from
+<code>Cat &gt; CatWild &gt; CatHybrid</code>
+would be available to <code>CatHybrid</code>.
+</p>
+<p>
+Instead we'll create a simple
+constructor that can pass along <code>Cat constructor</code>
+parameters, <code>breed, behavior</code>.
+We added one new parameter named, <code>wildtype</code>.
+</p>
+<code>constructor(breed, behavior, wildtype){...}</code>
+
+<h3>Simple CatHybrid Display</h3>
+<p>
+The light aqua box creates a default new
+<code>CatHybrid</code> and gives it a few unique qualities.
+</p>
+<p>
+The red box creates a new <code>CatHybrid</code>,
+provides some unique qualities, then creates
+the read only property called <code>personality</code>.
+Property <code>personality</code> was preassigned
+the value <q>Awesome</q>.
+</p>
+<p>
+Tap a <a href="#bA" title="Hybrid Cat Button">hybrid cat button</a>.
+</p>
+<div 
+id="bA" 
+class="box" 
+onclick="var c = new CatHybrid('Savannah','Large','Serval'); c.qualities='16 Inches Tall from the Shoulder'; c.showInfoTypeHybrid('bA');" 
+style="background-color:aqua; color:black;;"
+title="Hybrid Cat Button"
+>
+Click for Hybrid Cat Info
+</div>
+
+<div 
+id="bC" 
+class="box" 
+onclick="var c = new CatHybrid('Oriental Shorthair','Siamese without Points','Domestic Siamese'); c.qualities='Foreign Appearance'; c.assignReadOnly(); c.showInfoTypeHybrid('bC');" 
+style="background-color:#ff0000;"
+title="Hybrid Cat Button"
+>
+Click Create Read Only <em>Personality</em>
+</div>
+
+<h3 class="pt">Cat Hybrid Box Markup</h3>
+<p>
+The markup is similar to
+the original <a href="#mu" title="Box HTML Markup">Box HTML Markup</a>,
+except create a new <code>CatHybrid()</code>.
+Assign a value to the setter.
+For example, see the Savannah cat's qualities:
+</p>
+<code>c.qualities='16 Inches Tall from the Shoulder';</code>
+<p>
+Call method <code>showInfoTypeHybrid()</code>.
+</p>
+
+<h3 class="pt">No Setter Method</h3>
+<p>
+This little example demonstrates two attempts
+to assign a value to a property which has
+a getter method but not a setter method.
+</p>
+<p>
+The blue box tries to use the non-existent
+getter method for <code>oddity</code>,
+to assign the value <q>Wild Appearance</q>.
+It <em>doesn't succeed</em>.
+</p>
+<p>
+The pink box <em>circumvents</em> the setter
+and simply assigns the value <q>Wild Appearance</q> to the 
+property <code>catOddity</code>.
+Property <code>catOddity</code> really has
+nothing to protect it from invalid assignments.
+</p>
+<p>
+Developers can use the setter method to
+suggest future developers use setter, rather
+than assigning values directly to a property.
+Setter use currently isn't enforced.
+</p>
+<p>
+Developers can omit the getter method to
+suggest future developers avoid assigning
+values to a specific property.
+However, there currently may not
+exist a technique to avoid assignment
+of predeclared properties.
+Yet, as you'll see below,
+dynamically defined properties
+provide a level of protection.
+</p>
+
+<div class="blk pt">
+<div 
+id="bB" 
+class="box"
+style="background-color:blue;"
+onclick="var c = new CatHybrid('Ocicat','Spotted','Domestic Cat with Ocelot Appearance'); c.qualities='Spotted fur.'; c.oddity='Wild Appearance'; c.showInfoTypeHybrid('bB'); " 
+title="Hybrid Cat Button"
+>
+Click: Attempt Assign Get Only <em>Oddity=Wild Appearance</em>
+</div>
+
+<div 
+id="bY" 
+class="box" 
+onclick="var c = new CatHybrid('Oriental Shorthair','Siamese without Points','Domestic Siamese'); c.qualities='Foreign Appearance'; c.catOddity='Wild Appearance';  c.showInfoTypeHybrid('bY');" 
+style="background-color:#ffaaaa; color:black;"
+title="Hybrid Cat Button"
+>
+Click: Workaround Assign Get Only <em>Oddity=Wild Appearance</em>
+</div>
+</div>
+
+<h3>Box Markup with Workaround</h3>
+<p>
+The blue box attempts to assign <q>Wild Appearance</q>
+to the <em>non existent</em> getter property.
+So it doesn't work.
+</p>
+<code>c.oddity='Wild Appearance';</code>
+<p>
+The pink box assigns <q>Wild Appearance</q>
+<em>directly</em> to the <code>Cat</code>
+object's property <code>catOddity</code>
+and <em>it does work</em>.
+</p>
+<code>c.catOddity='Wild Appearance';</code>
+
+<p>
+The entire markup follows.
+</p>
+<pre>
+&lt;div 
+id="bB" 
+class="box"
+style="background-color:blue;"
+onclick="var c = new CatHybrid('Ocicat','Spotted','Domestic Cat with Ocelot Appearance'); c.qualities='Spotted fur.'; c.oddity='Wild Appearance'; c.showInfoTypeHybrid('bB'); " 
+title="Hybrid Cat Button"
+&gt;
+Click: Attempt Assign Get Only &lt;em&gt;Oddity=Wild Appearance&lt;/em&gt;
+&lt;/div&gt;
+
+&lt;div 
+id="bY" 
+class="box" 
+onclick="var c = new CatHybrid('Oriental Shorthair','Siamese without Points','Domestic Siamese'); c.qualities='Foreign Appearance'; c.catOddity='Wild Appearance';  c.showInfoTypeHybrid('bY');" 
+style="background-color:#ffaaaa; color:black;"
+title="Hybrid Cat Button"
+&gt;
+Click: Workaround Assign Get Only &lt;em&gt;Oddity=Wild Appearance&lt;/em&gt;
+&lt;/div&gt;
+</pre>
+
+<h2 id="pcp" class="pt">Protect Class Properties</h2>
+<p>
+The pink box below, creates a <em>read-only</em> property named <code>personality</code>
+then attempts to assign <q>Playful</q> to replace <code>personality's</code> default value of,
+<q>Awesome</q>. The assignment <em>doesn't succeed</em>.
+</p>
+<p>
+The aqua box creates a <em>writeable</em> property named <code>personality</code>
+then attempts to assign <q>Playful</q> to replace <code>personality's</code> default value of,
+<q>Awesome</q>. The assignment <em>does succeed</em>.
+</p>
+
+<h4>Protect Properties</h4>
+<p>
+From this example you can see that creating readable and writable
+properties dynamically works to protect class variables.
+</p>
+<p>
+Getters and setters, in this version of JavaScript, could
+be considered developer suggestions for clean code, yet
+they're easy to work around.
+Use <code>defineProperty</code> to create read only properties,
+as you'll see below.
+</p>
+<div class="blk pt">
+<div 
+id="bZ" 
+class="box" 
+onclick="var c = new CatHybrid('Oriental Shorthair','Siamese without Points','Domestic Siamese'); c.qualities='Foreign Appearance'; c.assignReadOnly(); c.personality=' Playful'; c.showInfoTypeHybrid('bZ');" 
+style="background-color:#ff8888; color:black;;"
+title="Hybrid Cat Button"
+>
+Click Create: Read Only, Attempt Assign <em>Personality = Playful</em>
+</div>
+
+<div 
+id="bW" 
+class="box" 
+onclick="var c = new CatHybrid('Oriental Shorthair','Siamese without Points','Domestic Siamese'); c.qualities='Foreign Appearance'; c.assignWriteable(); c.personality=' Playful'; c.showInfoTypeHybrid('bW');" 
+style="background-color:#88ffff; color:black;;"
+title="Hybrid Cat Button"
+>
+Click Create: Writeable, Attempt Assign <em>Personality = Playful</em>
+</div>
+</div>
+
+<h3 class="pt">Read Only or Writeable Properties</h3>
+<p>
+Create read only or write only properties,
+in a class, 
+with the <code>defineProperty</code>
+method. Pass <code>this</code>
+as the first parameter,
+the name of your property, in this case; <q>personality</q>,
+as your second parameter.
+Provide a value, and <code>writeable: false</code>
+for read only properties.
+Apply <code>writeable: true</code> for 
+read and write properties, as follows.
+</p>
+<pre>
+assignReadOnly(){
+Object.defineProperty(this, "personality", {
+value: " Awesome",
+writable: false
+});
+}
+
+assignWriteable(){
+Object.defineProperty(this, "personality", {
+value: " Awesome",
+writable: true
+});
+}
+</pre>
+
+<h3 id="ch">Cat Hybrid Class</h3>
+<p>
+See the entire <code>CatHybrid</code>
+class with getter and setter methods,
+plus methods to create dynamic
+read only or writable properties.
+</p>
+<p>
+Both <code>CatHybrid</code>
+and <code>CatWild</code>
+derive from class <code>Cat</code>.
+They <em>extend</em> class <code>Cat</code>,
+which allows each sub class to access
+properties and methods in the super class, <code>Cat</code>.
+</p>
+<pre>
+// CatHybrid's parent
+// class is Cat.
+class CatHybrid extends Cat{
+
+/**
+* CatHybrid constructor.
+
+* @param breed: string cat breed.
+* @param behavior: string cat behavior.
+* @param wildtype: string wild cat base.
+*/
+class CatHybrid extends Cat{
+	
+constructor(breed, behavior, wildtype) {
+// Call parent, Cat,
+// class constructor.
+super(breed, behavior);
+this.wildtype = wildtype;
+}
+
+get qualities() {
+return this.catQualities;
+}
+
+set qualities(d) {
+this.catQualities = d;
+}
+
+// You can get
+// but cannot set
+// oddity.
+get oddity() {
+return this.catOddity;
+}
+	
+assignReadOnly(){
+Object.defineProperty(this, "personality", {
+ value: " Awesome",
+ writable: false
+});
+}
+
+assignWriteable(){
+Object.defineProperty(this, "personality", {
+value: " Awesome",
+writable: true
+});
+}
+
+showInfoTypeHybrid(sId) {
+this.showInfoType(sId);
+this.element.innerHTML += '<br>Wild Cat: '+this.wildtype;
+
+if(this.oddity != null){
+this.element.innerHTML += '<br>Oddity:'+this.oddity;
+}
+else{
+this.element.innerHTML +="<br>Oddity was not assigned.";
+}
+
+if(this.personality != null){
+this.element.innerHTML += '<br>Personality:'+this.personality;
+}
+else{
+this.element.innerHTML +="<br>Personality was not assigned.";
+}
+
+if (this.catQualities != null){
+this.element.innerHTML +='<br>Qualities: '+this.catQualities;
+}
+}
+
+static description() {
+let s = "A hybrid cat is a domestic feline crossbred with a wild cat." 
+return s + " TypeOf: " + typeof CatHybrid;
+}
+
+}
+</pre>
+
+<h2 id="static">Static Methods</h2>
+<p>
+Static methods allow developers to call
+a method, with the name of the class,
+rather than the name of the class object.
+That means you <em>can not</em> access
+any class object properties, unless those
+properties are passed through the
+static method's parameter list.
+</p>
+
+<h3>Add Static Method</h3>
+<p>
+Add a static method to the
+<code>CatHybrid</code> class, as you can
+see above.
+That method named, <code>definition()</code>
+will <em>always</em> return the same information.
+</p>
+<pre>
+/**
+* Static method
+* prepend the method name 
+* with the static keyword
+*
+*/
+static description() {
+let s = "A hybrid cat is a domestic feline crossbred with a wild cat." 
+return s + " TypeOf: " + typeof CatHybrid;
+}
+</pre>
+
+<div id="eText">
+<h3>Call a Static Method</h3>
+<p>
+The <code>CatHybrid typeof</code> operator
+returns <q>function</q>.
+Previously calling <code>typeof</code>
+on a new class object, returns <q>object</q>.
+</p>
+<div class="box" onclick="this.innerHTML = CatHybrid.description()" style="background-color:#0088ff; width:100%;">
+Click for Hybrid Cat Description.
+</div>
+</div>
+
+<div id="eGraphic">
+<h3>Static Method Markup</h3>
+<p>
+Notice you call <code>CatHybrid.description()</code>
+not <code>c = new CatHybrid(..); c.description();</code>.
+Call the class name, not the class object.
+</p>
+<pre style="text-align:left;">
+&lt;div 
+class="box" 
+onclick="this.innerHTML = CatHybrid.description()" 
+style="background-color:#0088ff;"
+&gt;
+Click for Hybrid Cat Description.
+&lt;/div&gt;
+</pre>
+</div>
+
+<h3>Entire JavaScript</h3>
+<p>
+You may see the entire JavaScript source code
+applied to this lesson
+at <a href="javascript/Cats.js">Cats.js</a>.
+I added fewer comments to the source code,
+to minimize download time.
+I added more comments to this page, to
+clarify each feature.
+</p>
+
+<h2 id="sum">Summary</h2>
+<p>
+This page covered JavaScript class
+implementation, inheritance, getters, setters,
+how to define dynamic read-only properties
+and static methods.
+JavaScript classes are templates for JavaScript objects.
+Classes are part of ES6.
+</p>
+</main>
+</body>
+</html>
