@@ -1,0 +1,767 @@
+<!doctype HTML>
+<html lang="en">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>JavaScript: Client-Server with JSON, PHP &amp; MySQL</title>  	
+<meta name="description" content="Learn to implement two JSON client-servers with JavaScript, PHP and MySQL. This page includes explanation, source code and examples.Page 20"/>  	
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body{margin-top:0px;padding-top:0px;font-family:verdana, arial, sans-serif;}
+body,html{height:100%;}
+main{width:90%;margin:0px 5% 0px 5%;}
+
+p {text-align:left;}
+h1,h2,h3,h4{text-align:left;clear:both; display:block;}
+h1{color:#0000aa;} h5{color:#0000aa;}
+h2{color:#008574;} h2 q {color:#008574;}
+h3{color:#0000aa;} h4{ color:#007777; }
+
+q,pre,code{text-align:left; color:blue;}
+
+.btn,.btn:link,.btn:visited{
+width:40%; padding:1%; margin:0px 1% 0px 1%;
+color:black; background-color:white; -webkit-appearance:none;text-align:center; border:solid 2px #888888;
+border-radius: 6px;
+}
+.btn:hover,.btn:active{background-color:#bbbbbb;}
+.btn img.toc, .btn span.toc, .btn span.sml{float:none; display:block; text-align:center; margin:1% auto 1% auto;}
+.btn span.toc{font-weight:bold;}
+.txt{clear:both; float:none; display:block; width:100%; text-align:center; color:#3FA9F5; font-size:400%; font-weight:bold; font-family:Impact, Charcoal, sans-serif;}
+
+img.ex{display:block; width:80%; margin:1% auto 0px auto; border:solid 1px blue;}
+div.lnk{float:left;width:25%;margin:4% 4% 4% 0%;}
+a.bm{color:#1111aa;width:100%;display:inline-block;padding-bottom:3%;}
+a.bm:link{color:#1111aa;} a.bm:hover{color:#008888;}
+a.bm:visited{color:#1111aa;} a.bm:active{color:#008888;}
+.box{
+color:white; 
+width:46%; 
+text-align:left;
+float:left; 
+display:inline;  
+padding:1%; 
+margin:0px 1% 0px 1%;
+font-weight:bold;
+}
+.peach{background-color:peachpuff; color:black;}
+.aq{background-color:aqua;color:black;}
+
+#eText,#eGraphic{display:inline; width:48%;}
+#eText{color:#111122; float:left;text-align:left; }
+#eGraphic{height:auto; float:right; color:black; text-align:center; margin-bottom:4%;}
+
+.pt{padding-top:2%;}
+@media (orientation: portrait) or ((max-width: 640px)) {
+.btn{display:block; float:none; width:100%; }
+.btn img.toc{width:50%;}
+div.lnk{float:none; display:block; width:100%;margin:0px;}
+div.box{
+width:96%;
+margin:4% 1% 0px 1%;
+padding:4% 1% 4% 1%;
+display:block; 
+float:none;
+}
+
+#eText img.ex, img.ex{width:100%; margin:2% 0px 2% 0px; border:solid 1px black;}
+#eText, #eGraphic{display:block; float:none; width:100%;}
+}
+
+</style>   
+<script async src="javascript/json-to-from-server.js"></script>
+</head>
+<body>	
+<main>
+<h1>JavaScript: Client-Server with JSON, PHP &amp; MySQL</h1>
+<div class="lnk">			
+<a class="bm" href="#intro" title="Introduction">Introduction</a>
+<a class="bm" href="#jServer" title="JSON Client-Server Examples">JSON Client-Server Examples</a>
+<a class="bm" href="#eGraphic" title="JSON Client-Server Code">JSON Client-Server Code</a>
+<a class="bm" href="animals-sd.php" title="South Dakota Animals">South Dakota Animals: Full Table</a>
+<a class="bm" href="json-server.php" title="Simple JSON Server Page">Simple JSON Server Page</a>
+<a class="bm" href="#sum" title="Summary">Summary</a>
+</div>
+<button class="btn" style="float:right;" onclick="window.location='#json'" title="JavaScript Code Download or View">
+<img class="toc"  src="thumbnails/ss-bison.jpg" alt="Bison with Statistics" />
+<span class="toc">JavaScript</span>
+<span class="sml">See &amp; Try the Code</span>
+</button>
+
+<h2 id="intro">Introduction</h2>
+<p>
+Learn to implement two JSON client-servers
+with JavaScript, PHP and MySQL.
+This page includes explanation,
+source code and examples.
+The examples display information
+about animals in South Dakota, in response
+to one tap of a button, a menu selection,
+or you can see the entire table of animals
+at <a href="animals-sd.php" title="South Dakota Animals">South Dakota Animals</a>.
+</p>
+<p>
+We'll start with a very simple PHP
+server that returns data in JSON
+format, for just one animal, when you tap a button.
+Next you can tap a button or select
+animals from a menu to see
+information returned from a MySQL database.
+</p>
+<p>
+Learn two JSON techniques developers
+can use to send and retrieve data
+from a server.
+The first technique hard codes JSON
+values for return to the client.
+The second technique obtains JSON
+values from a MySQL table, to
+return to the client.
+</p>
+
+<h2>MySQL</h2>
+<p>
+For this code to work you'll need PHP enabled and a MySQL table
+named <q>AnimalsSD</q>.
+The table uses four columns called, <code>name, region, image</code>, and <code>imglnk</code>,
+of type varchar 256. Plus one column <code>population</code>, of type
+integer. I also added a unique index for each column, although that's not necessary.
+</p>
+<p>
+However you can modify the code and use it for any suitable table. 
+I was very happy to see how easy it is to return JSON to JavaScript from
+a MySQL database.
+</p>
+<p>
+The following screen shot's from phpMyAdmin, of the <q>AnimalsSD</q> table.
+</p>
+<img class="ex" src="assets/table-animalsSD.png" title="South Dakota Animals Table">
+
+
+<div id="eText">
+<h3 id="jServer">JSON Client-Server Examples</h3>
+<p>
+Tap a button or select a menu item, to see
+data from a server.
+These examples require an active PHP Web server to
+execute. You may copy the files to your Web server if necessary.
+</p>
+
+<div id="jGet" class="box aq"  onclick="getSingle()">
+Tap: Requests Bison Information from a JSON Server.
+</div>
+
+<div id="jSend" class="box peach" onclick="getAnimalInfo('Pronghorn')">
+Tap: Requests Pronghorn Information from MySQL and JSON.
+</div>
+
+<h4 style="padding-top:2%;">Select an Animal from the Menu</h4>
+<select style="width:100%; display:block; padding:2% 2% 2% 0px;" id="json" onchange="getAnimal('json');">
+<option value='Pronghorn'          onclick="getAnimal('json');">Pronghorn</option>
+<option value='Bison'              onclick="getAnimal('json');">Bison</option>
+<option value='Prairie Dog'        onclick="getAnimal('json');">Prairie Dog</option>
+<option value='Mountain Lion'      onclick="getAnimal('json');">Mountain Lion</option>
+</select>
+<img id="ePicture" class="ex" src="thumbnails/ss-graphics-here.png" title="Graphics Display Here">
+</div>
+
+<div id="eGraphic">
+<h3>JSON Client-Server Code</h3>
+<h4>Markup</h4>
+<p>
+Create two colored boxes and
+a drop down menu.
+Tap a box or select a menu item
+to activate a JavaScript function.
+</p>
+<pre>
+&lt;div 
+id="jGet" 
+class="box aq"  
+onclick="getSingle()"&gt;
+Tap: Requests Bison Information from a JSON Server.
+&lt;/div&gt;
+
+&lt;div id="jSend" 
+class="box peach" 
+onclick="getAnimalInfo('Pronghorn')"&gt;
+Tap: Requests Pronghorn Information from MySQL and JSON.
+&lt;/div&gt;
+
+&lt;h4&gt;
+Select an Animal from the Menu
+&lt;/h4&gt;
+
+&lt;select 
+class="blk w100" 
+id="json" 
+onchange="getAnimal('json');"&gt;
+
+&lt;option 
+value='Pronghorn'          
+onclick="getAnimal('json');"&gt;
+Pronghorn
+&lt;/option&gt;
+
+&lt;option 
+value='Bison'              
+onclick="getAnimal('json');"&gt;
+Bison
+&lt;/option&gt;
+
+&lt;option 
+value='Prairie Dog'        
+onclick="getAnimal('json');"&gt;
+Prairie Dog
+&lt;/option&gt;
+
+&lt;option 
+value='Mountain Lion'      
+onclick="getAnimal('json');"&gt;
+Mountain Lion
+&lt;/option&gt;
+
+&lt;/select&gt;
+
+&lt;img 
+id="ePicture" 
+class="ex" 
+src="thumbnails/ss-graphics-here.png" 
+title="Graphics Display Here"
+&gt;
+</pre>
+
+<h4>JavaScript</h4>
+<p>
+Send requests to a PHP server.
+Display results on the HTML
+Web page.
+</p>
+<p>
+Obtain an image element
+and both box elements,
+for display of data.
+</p>
+<p>
+See the JavaScript file
+<a href="javascript/json-to-from-server.js" title="json-to-from-server.js">json-to-from-server.js</a>.
+I minimized comments, in the JavaScript file, for faster download time.
+However the following listing includes comments for clarification.
+</p>
+<pre>
+var ePicture = null;
+
+/**
+* Obtain the IMG to
+* display all images.
+*/
+function getPictureElement(){
+if(ePicture == null){
+ePicture = document.getElementById('ePicture');
+}
+}
+
+/**
+* Just call a single response
+* simple PHP server, json-server.php.
+* See json-server.php below.
+*/
+function getSingle(){
+getPictureElement();
+
+// Create a download request.
+const xmlhttp = new XMLHttpRequest();
+
+// When the download completes:
+xmlhttp.onload = function() {
+
+// Convert server text to JSON:
+const animalObj = JSON.parse(this.responseText);
+
+// Obtain HTML element for
+// information display:
+let jGet = document.getElementById('jGet');
+
+// Display the name, region and
+// population for one animal:
+jGet.innerHTML =  "The number of "+animalObj.name;
+jGet.innerHTML += " near "+animalObj.region;
+jGet.innerHTML += " is approximately "+animalObj.pop+".";
+
+// Display the animal's photo.
+ePicture.src = animalObj.image;
+}
+
+// Send the request to json-server.php:
+xmlhttp.open("GET", "json-server.php");
+xmlhttp.send();
+}
+
+
+/**
+* Process send request for 
+* information about one animal.
+* Display received information.
+* @param a: string name of animal.
+*/
+function getAnimalInfo(a){
+
+// Obtain IMG element:
+getPictureElement();
+
+// Convert animal name
+// to JSON format:
+const dbParam = JSON.stringify(a);
+
+// Prepare a download request:
+const xmlhttp = new XMLHttpRequest();
+
+// After download process
+// the received data:
+xmlhttp.onload = function() {
+
+// Convert received data to JSON format:
+const animalObj = JSON.parse(this.responseText);
+
+// Obtain HTML element for text display:
+let jSend = document.getElementById('jSend');
+
+// Display the name, region and
+// population for one animal:
+let name = animalObj.name;
+if(name == "Prairie Dog"){
+jSend.innerHTML =  "The number of Prairie Dogs";
+jSend.innerHTML += " living on "+animalObj.region;
+}
+
+else if (name == "Mountain Lion"){
+jSend.innerHTML =  "The number of Mountain Lions";
+jSend.innerHTML += " near "+animalObj.region;
+}
+
+else{
+jSend.innerHTML =  "The number of "+animalObj.name;
+jSend.innerHTML += " near "+animalObj.region;
+}
+
+let pop = animalObj.pop;
+if (pop != 0){
+jSend.innerHTML += " is approximately "+pop+".";
+}
+else{
+jSend.innerHTML += " is unknown.";
+}
+
+// Display the image:
+ePicture.src = "assets/"+animalObj.image;
+}
+
+// Send the request to
+// animals-json-sd.php
+// Prepend URL with the animal name:
+// animals-json-sd.php?"+a
+xmlhttp.open("GET", "animals-json-sd.php?"+a);
+xmlhttp.send();
+}
+
+/**
+* Respond to JavaScript
+* selection of one menu item.
+* @param n: Menu ID.
+*
+* Obtain the value selected.
+* Call getAnimalInfo(s)
+* displayed above.
+*/
+function getAnimal(n) { 
+var s = document.getElementById(n).value; 
+getAnimalInfo(s); 
+}
+</pre>
+</div>
+
+<h4>PHP</h4>
+<h5>PHP for Aqua Box</h5>
+<p>
+This first PHP file, named
+<q>json-server.php</q>,
+simply sends information about
+American Bison, to the client.
+Tap the aqua box, above, to see the results.
+</p>
+<p>
+Create an object with fields
+for name, population, region
+and a path to the image file.
+Convert the data to JSON
+format with <code>json_encode(...)</code>.
+Echo displays the end result, which
+is also the data received by
+the client.
+</p>
+<p>
+See the echoed information at
+<a href="json-server.php" title="json-server.php">json-server.php</a>.
+</p>
+<pre>
+&lt;?php
+$animalObj->name = "American Bison";
+$animalObj->pop = 1500;
+$animalObj->region = "Custer State Park, South Dakota";
+$animalObj->image ="assets/bison.jpg";
+$animalJSON = json_encode($animalObj);
+echo $animalJSON;
+?&gt;
+</pre>
+
+<h5>PHP for Peach Colored Box &amp; Menu</h5>
+<p>
+When you tap the peach colored box
+or select a menu item,
+JavaScript sends a request for
+the selected animal to the PHP
+file named <q>animals-json-sd.php</q>.
+</p>
+<p>
+The peach colored box sends
+a request for <q>Pronghorn</q>
+only. The menu sends a request
+for the item you select.
+They both send the request to the
+same PHP file <q>animals-json-sd.php</q>,
+displayed below.
+</p>
+<p>
+The function <code>getSQL()</code>
+opens a connection to the database
+for MySQL table <q>AnimalsSD</q>.
+Most of the work's accomplished within
+the file <q>functions.php</q>,
+covered below.
+</p>
+<pre>
+&lt;?php
+include ('functions.php');
+getPutData();
+getSQL("AnimalsSD");
+?&gt;
+</pre>
+
+<h5>PHP to display HTML Table</h5>
+<p>
+The following PHP listing displays
+an HTML table from a MySQL
+table named <q>AnimalsSD</q>.
+See the table at
+<a href="animals-sd.php" title="South Dakota Animals">South Dakota Animals</a>.
+</p>
+<p>
+Most of the work's accomplished within
+the file <q>functions.php</q>,
+covered below.
+</p>
+<pre>
+&lt;?php
+include ('functions.php');
+showHeader("South Dakota Animals");
+getPutData();
+getSQL("AnimalsSD");
+showFooter();
+?&gt;
+</pre>
+
+<h5>Functions PHP</h5>
+<p>
+File <q>functions.php</q> accomplishes
+one of two tasks, when executed.
+</p>
+<ul>
+<li>Return Information for one animal in JSON format</li>
+<li>Return Information for all animals in an HTML table format</li>
+</ul>
+<p>
+File <q>functions.php</q> accesses a MySQL database to obtain
+information about one or all animals
+in the <q>AnimalsSD</q> table.
+
+If the URL's appended with an animal name, then
+just return JSON data for one animal.
+Otherwise display up to ten rows of the MySQL table, <q>AnimalsSD</q>.
+See the entire table of
+<a href="animals-sd.php" title="South Dakota Animals">South Dakota Animals</a>.
+</p>
+<p>
+</p>
+<pre>
+&lt;?php
+// Data for connection
+// to database.
+// You'll need your
+// own file with values for:
+// $hostname  = "nnn.nnn.nn.nn";
+// $username  = "your_name";
+// $dbname    = "your_database";
+// $password  = "your_password";
+include ('encrypted.php');
+
+// Maximum number of rows
+// to show in a table.
+define("MAXROWS", 10);
+$bShowTable = true;
+$animalName = null;
+
+
+/**
+ * Render a Web page's header.
+ * Readers probably want to modify
+ * this code for their own Web site's header.
+ 
+ * @param string $sTitle: Web page title.
+ */
+function showHeader($sTitle){
+ echo' &lt;!DOCTYPE html&gt;';
+ echo' &lt;html lang="en-US"&gt;&lt;head&gt;&lt;title&gt;' . $sTitle . '&lt;/title&gt;';
+ echo' &lt;meta name="description" content="Score board for the ' . $sTitle . '. Shows the top ten scores."/&gt;';
+ echo' &lt;meta http-equiv="content-type" content="text/html; charset=utf-8" /&gt;';
+ echo' &lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;';
+ echo'&lt;style&gt; ';
+ echo'main{width:90%; margin:0px auto 0px auto;}';
+ echo'table{color:black; table-layout:fixed; width:100%; border-collapse:collapse; background-color:#4ef9ff; }';
+ echo'th{text-align:left; font-weight:bold; color:white; background-color:#3b4afd; }';
+ echo'td{text-align:left;}';
+ echo'tr:nth-child(even){background-color:#4ef9ff;}';
+ echo'tr:nth-child(odd) {background-color: #758dff;}';
+ echo'td img{width:20%;}';
+
+ echo'@media (max-width: 640px){';
+ echo'th,tr,td{font-size:100%;}';
+ echo'tr,td{font-weight:normal;}';
+ echo'td img{width:20%;} td{word-wrap: break-word;}';
+ echo'}';
+ echo'@media (orientation: portrait) { ';
+ echo'tr{font-size:80%;}';
+ echo'}';
+ echo'&lt;/style&gt;';
+ echo '&lt;/head&gt;';
+ echo' &lt;body&gt;';
+ echo '&lt;main&gt;';
+ echo'&lt;h1&gt;'. $sTitle .'&lt;/h1&gt;';
+}
+
+
+/**
+* If the URL's appended with
+* the name of an animal
+* then assign $bShowTable = false
+* because we don't want to show the table.
+* Otherwise show the table.
+
+* Also assign the value that was appended
+* to the URL, to
+* variable $animalName
+* Later just information for
+* $animalName is
+* returned in JSON format.
+*/
+function getPutData(){
+ global $animalName;
+ global $bShowTable;
+ 
+ $animalName = $_SERVER ['QUERY_STRING'];
+ $animalName = urldecode($animalName);
+ 
+ if ($animalName == null || strlen($animalName) == 0 || empty($animalName) || ctype_space($animalName)){
+  echo '&lt;h2&gt;See All Animals in the Table&lt;/h2&gt;';
+  $bShowTable = true;
+ } 
+ else{
+  $bShowTable = false;
+ }
+}
+
+/**
+ * Render a Web page's footer.
+ * Readers probably want to modify
+ * this code for their own Web site's footer.
+ */
+function showFooter(){
+ echo'&lt;/main&gt;';
+ echo '&lt;/body&gt;&lt;/html&gt;';
+}
+
+
+/**
+* Display the entire MySQL table
+* to an HTML table.
+
+* @param $result: Array of MySQL rows.
+*/
+function showTable($result){ 
+ global $animalName, $bShowTable;
+ if ($bShowTable == true){
+  // Display the header:
+  echo'&lt;table&gt;&lt;tr&gt;&lt;th&gt;Name&lt;/th&gt;&lt;th&gt;Region&lt;/th&gt;&lt;th&gt;Population&lt;/th&gt;&lt;th&gt;Image Link&lt;/th&gt;&lt;/tr&gt;';
+ }
+ 
+ // Display each row.
+ if($result) {
+  while($row = mysqli_fetch_array($result)){
+    $name = $row['name'];
+    $region= $row['region'];
+    $pop = $row['population'];
+    $imglnk = $row['imglnk'];
+    
+    // A population of zero
+    // indicates no one knows
+    // the actual population.
+    if ($pop == 0){
+     $pop = "Unknown";
+    }
+    
+    // Display each value in one row:
+    echo '&lt;tr&gt;&lt;td&gt;' . $name. '&lt;/td&gt;&lt;td&gt;' . $region.'&lt;/td&gt;&lt;td&gt;'. $pop . '&lt;/td&gt;&lt; &lt;td&gt;' . $imglnk . '&lt;/td&gt;&lt;/tr&gt;';
+   }
+  }
+ echo'&lt;/table&gt;';
+}
+
+
+/**
+ * Obtain just the first row of
+ * MySQL data.
+ * Convert to an associative array.
+ * Assign each cell to a property.
+ * Convert the associative array to JSON format.
+ */
+function showJSON($result){
+ if($result){
+  //  Convert MySQL to an associative array:
+  $row = mysqli_fetch_assoc($result);
+
+  // Copy each cell as a string.
+  $animalObj-&gt;name   = (string)$row['name'];
+  $animalObj-&gt;region = (string)$row['region'];
+  $animalObj-&gt;image  = (string)$row['image'];
+  $animalObj-&gt;pop    = (string)$row['population'];
+  
+  // Convert the associative array to JSON format.
+  $animalJSON = json_encode($animalObj);
+  
+  // Echo the JSON object.
+  // JavaScript obtains this data,
+  // for display in HTML.
+  echo $animalJSON;
+ }
+}
+
+
+/**
+ * Execute a query or exit this program.
+ * @param SQL Connection: $con
+ * @param String $sQuery: string SQL Query.
+ * @return: result of SQL query.
+ 
+ * Null's never returned because this function
+ * exits the program if the result's null.
+ */
+function getSQLQuery($con, $sQuery){
+
+ // rows or an error value:
+ $rValue = mysqli_query($con,$sQuery);
+ 
+ if ($rValue == null){
+  $sError = mysqli_error($con);
+  echo ' error adding or updating: ' . $sError;
+  
+  // Exit the program
+  // die(..) is an alias for exit(...)
+  exit('Error: ' . $sError);
+ }
+ return $rValue;
+}
+
+
+/**
+* Connect to the database.
+* Select the database.
+* Either display the entire table
+* in HTML format or one row in JSON format.
+
+* @param $tableName: String name of MySQL table.
+*/
+function getSQL($tableName){
+ global $hostname,$username,$password,$dbname,$bShowTable,$animalName;
+ $con = null;
+ $sQuery = null;
+ $sqlResult = null;
+ 
+ // Connect to the database or exit:
+ $con = mysqli_connect($hostname,$username, $password) OR DIE ('Unable to connect to database! Please try again later.');
+ 
+ // Select our database:
+ mysqli_select_db($con,$dbname);
+ 
+ if($bShowTable == true){
+  $sQuery = "SELECT * FROM " . $tableName;
+  
+  //Get all the rows from the table.
+  $sqlResult =  getSQLQuery($con,$sQuery);  
+  showTable($sqlResult);
+ }
+ 
+ else{
+  $sQuery = "SELECT * FROM ". $tableName . " WHERE name = '{$animalName}'";
+
+  $sqlResult = getSQLQuery($con,$sQuery);
+  
+  // Display one row
+  // in JSON format.
+  showJSON($sqlResult);
+ }
+ 
+ // Always close the
+ // databse connection.
+ mysqli_close($con);
+}
+?&gt;
+</pre>
+
+
+<h2 id="sum">Summary</h2>
+<p>
+You learned to implement two JSON client-servers
+with JavaScript, PHP and MySQL.
+This page included explanation,
+source code and examples.
+The examples display information
+about animals in South Dakota, in response
+to one tap of a button, a menu selection,
+or you can see the entire table of animals
+at <a href="animals-sd.php" title="South Dakota Animals">South Dakota Animals</a>.
+</p>
+<p>
+We started with a very simple PHP
+server that returns data in JSON
+format, for just one animal, when you tap a button.
+Next you can tap a button or select
+animals from a menu to see
+information returned from a MySQL database.
+</p>
+<p>
+You learned two JSON techniques developers
+can use to send and retrieve data
+from a server.
+The first technique hard codes JSON
+values for return to the client.
+The second technique obtains JSON
+values from a MySQL table, to
+return to the client.
+</p>
+<p>
+If for any reason this does not work for you
+please see
+<a href="https://code.7Thunders.biz/h5/js/javascript20.php" title="JavaScript: Client-Server with JSON, PHP &amp; MySQL">JavaScript: Client-Server with JSON, PHP &amp; MySQL</a>,
+for details and a working example.
+</p>
+</main>
+</body>
+</html>
